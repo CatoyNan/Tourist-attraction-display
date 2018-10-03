@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="js/hammer.min.js"></script>
+    <title>Document</title>
+    <style>
+        /* 初始化开始 */
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            /* background: url(images/bg_small.png); */
+        }
+        html,body{
+          overflow: hidden;
+          height: 100%;
+        }
+        img {
+            /* pointer-events: none;  */
+        }
+        /* 地图界面开始 */
+        #outer {
+            width: 100%;
+            height: 100%;
+            margin:0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #map {
+            width: 1680px;
+            height: 764px;
+            position: relative;
+            background-image: url(images/map_small.png);
+        }
+        .coordinate {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            border:1px solid red;
+            border-radius: 50%;
+        }
+        .coordinate:click {
+
+        }
+        /* 提示界面开始 */
+        .click {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: table-cell;display:-webkit-box;
+	        display:-ms-flexbox;
+	        display:flex-box;
+	        display:flex;
+	        -webkit-box-align:center;
+	        -ms-flex-align:center;
+	        align-items:center;
+	        -webkit-box-pack:center;
+	        -ms-flex-pack:center;
+	        justify-content:center;
+	        text-align:center;
+        }
+        .click img {
+            /* margin-top: 50%; */
+            width: 76%;
+            animation: twinkling 600ms infinite;
+            -webkit-animation: twinkling 600ms infinite;
+        }
+        .click p span {
+            display: block;
+        }
+        .click span:nth-child(1) {
+            color: rgb(255, 255, 255);
+            font-size: 1.3em;
+            letter-spacing: 5px;
+        }
+        .click span:nth-child(2) {
+            color: rgb(255, 255, 255);
+            font-size: 1em;
+        }
+        /* 简介界面开始 */
+        .brief {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.4);
+            display:-webkit-box;
+            display:-ms-flexbox;
+            display:none;
+            -webkit-box-align:center;
+            -ms-flex-align:center;
+            align-items:center;
+            -webkit-box-pack:center;
+            -ms-flex-pack:center;
+            justify-content:center;
+            text-align:center;
+        }
+        .content {
+            width: 75%;
+            height: 65%;
+            /* border:1px solid red; */
+            /* border-radius: 4%; */
+        }
+        .content .header {
+            width: 100%;
+            height: 40%;
+            border-top-left-radius: 7px;
+            border-top-right-radius: 7px;
+            /* border:1px solid blue; */
+            background: url(images/img1.jpg)
+                        no-repeat
+                        scroll
+                        center center/100% 100%;
+        }
+        #cancel {
+            float: right;
+            /* border: 1px solid red; */
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: -5px;
+            margin-top: -5px;
+            background: rgba(255, 255, 255, 0.6)
+                        url(images/cancel.png)
+                        no-repeat
+                        scroll
+                        center center/10px 10px;
+        }
+        .content .center {
+            width: 100%;
+            height: 53%;
+            background-color: rgba(255, 255, 255, 0.8);
+            /* border:1px solid green; */
+        }
+        .content .footer {
+            width: 100%;
+            height: 7%;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8em;
+            letter-spacing: 1px;
+            line-height: 6%;
+            display: table;
+            /* border:1px solid white; */
+            border-bottom-left-radius: 7px;
+            border-bottom-right-radius: 7px;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .footer a {
+            list-style: none;
+            vertical-align:middle;
+            display:table-cell;
+        }
+        /* 手指闪烁动画开始 */
+        @-webkit-keyframes twinkling{	/*透明度由0到1*/
+            0%{
+                opacity:0.1;				/*透明度为0*/
+            }
+            50%{
+                opacity:1;				/*透明度为0*/
+            }
+            100%{
+                opacity:0.1;				/*透明度为1*/
+            }
+
+        }
+        @keyframes twinkling{	/*透明度由0到1*/
+            0%{
+                opacity:0.1;				/*透明度为0*/
+            }
+            50%{
+                opacity:1;				/*透明度为0*/
+            }
+            100%{
+                opacity:0.1;				/*透明度为1*/
+            }
+        }
+        /* 渐现、渐隐动画 */
+        @keyframes show{
+            0%{
+                opacity:0;
+            }
+            100%{
+                opacity:1;
+            }
+        }
+        @keyframes disappear{
+            0%{
+                opacity:1;
+            }
+            100%{
+                opacity:0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- 地图界面开始 -->
+    <div id="outer">
+        <div id="map">
+            <div class="coordinate" style="top:150px;left:90px;"></div>
+            <div class="coordinate" style="top:250px;left:90px;"></div>
+            <div class="coordinate" style="top:350px;left:90px;"></div>
+            <div class="coordinate" style="top:50px;left:190px;"></div>
+            <div class="coordinate" style="top:50px;left:890px;"></div>
+            <div class="coordinate" style="top:50px;left:990px;"></div>
+        </div>
+    </div>
+    <!-- 提示界面开始 -->
+    <div id="click_bg" class="click">
+        <div>
+            <img src="images/point.png" alt="" id="click_img">
+            <p><span>点击景点</span><span>收听语音简介</span></p>
+        </div>
+    </div>
+    <!-- 简介界面开始 -->
+    <div id="brief" class="brief">
+            <div class="content">
+                <div class="header">
+                    <div id="cancel"></div>
+                </div>
+                <div class="center"></div>
+                <div class="footer">
+                    <a>更多景点导览</a>
+                </div>
+            </div>
+    </div>
+
+
+<!-- js -->
+<script type="text/javascript">
+    window.onload = function(){
+        var oMap = document.getElementById("map");
+        var oCoordinates = oMap.getElementsByTagName("div");
+        var oOuter = document.getElementById("outer");
+        var oBrief = document.getElementById("brief");
+        var oCancel = document.getElementById("cancel");
+        var mapWidth = oMap.offsetWidth;
+        var mapHeight = oMap.offsetHeight;
+        var windowWidth = document.body.clientWidth;
+        var windowHeight = document.body.clientHeight;
+        drag(oMap);
+        showBrief();
+        briefDisappear();
+        // 获取css相关属性
+         function getCss(o,key){
+           return o.currentStyle? o.currentStyle[key] : document.defaultView.getComputedStyle(o,false)[key];
+         };
+
+       // 地图拖动函数
+        function drag(element){
+            element.style.top = getCss(element,"top");
+            element.style.left = getCss(element,"left");
+            var hammer = new Hammer(element);//hammer实例
+            hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });//允许垂直拖动
+            var x = 0;
+            var y = 0;
+            hammer.on('panstart',function(event){
+                x = parseInt(element.style.left);
+                y = parseInt(element.style.top);
+                console.log(x);
+            });
+            hammer.on('panmove',function(event){
+                element.style.top = y + event.deltaY + "px";
+                element.style.left = x + event.deltaX + "px";
+                console.log('top'+element.style.top+'/left'+element.style.left);
+            });
+            hammer.on('panend',function(event){
+                reset(element);
+            });
+            // hammer.on('tap',function(){
+            //     alert(123);
+            // });
+        }
+        // 点击显示简介
+        function showBrief(){
+            for(let i of oCoordinates){
+                var hammer = new Hammer(i);
+                hammer.on('tap',function(){
+                    oBrief.style.display = "flex";
+                    oBrief.style.animation = "show 0.8s";
+                });
+            }
+        }
+        // 简介消失
+        function briefDisappear(){
+            var hammer = new Hammer(oCancel);
+            hammer.on('tap',function(event){
+                if(oBrief.style.display != "none"){
+                    oBrief.style.animation = "disappear 0.5s";
+                    setTimeout(function(){
+                        oBrief.style.display = "none";
+                    },"400");
+                }
+            })
+        }
+        // 超出边界退回
+        function reset(element){
+            if(parseInt(element.style.top)>0){
+                element.style.top=0;
+            }
+            if(parseInt(element.style.left)>0){
+                element.style.left=0;
+            }
+            if(mapWidth-windowWidth>0 & parseInt(element.style.left)<0 & Math.abs(parseInt(element.style.left))>(mapWidth-windowWidth)){
+                element.style.left=-(mapWidth-windowWidth)+"px";
+            }
+            if(mapWidth-windowWidth<0 & parseInt(element.style.left)<0){
+                element.style.left=0;
+            }
+            if(mapHeight-windowHeight>0 & parseInt(element.style.top)<0 & Math.abs(parseInt(element.style.top))>(mapHeight-windowHeight)){
+                element.style.top=-(mapHeight-windowHeight)+"px";
+            }
+            if(mapHeight-windowHeight<0 & parseInt(element.style.top)<0){
+                element.style.top=0;
+            }
+        }
+        // 延时函数
+        setTimeout(function timeout(){
+            document.getElementById("click_bg").style.display = "none";
+        },"3000");
+
+        // 增加景点坐标函数
+        // function addPlace(p_x,p_y){
+        //     html =  oOuter.innerHTML;
+        //     // alert(oOuter.innerHTML);
+        //     // oOuter.innerHTML = html + "<div style='top="+p_y+"px;left="+p_x+"px;'></div>";
+        //     oOuter.innerHTML = html + "<div></div>";
+        //     var oDiv = oOuter.getElementsByTagName("div");
+        //     oDiv[oDiv.length-1].className = "coordinate";
+        //     oDiv[oDiv.length-1].style.top = p_y+"px";
+        //     oDiv[oDiv.length-1].style.left = p_x+"px";
+        // }
+    }
+</script>
+</body>
+</html>
