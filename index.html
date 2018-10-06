@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="js/hammer.min.js"></script>
     <title>Document</title>
@@ -113,7 +113,8 @@
             border-top-left-radius: 7px;
             border-top-right-radius: 7px;
             /* border:1px solid blue; */
-            background: url(images/img1.jpg)
+            /* background: url(images/img1.jpg) */
+            background:
                         no-repeat
                         scroll
                         center center/100% 100%;
@@ -147,12 +148,13 @@
             text-align: right;
             font-weight: 800;
             float: right;
+            margin-bottom: 10px;
         }
         .voice {
             width: 30%;
             height: 80%;
             float: left;
-            border:1px solid red;
+            /* border:1px solid red; */
         }
         .voice img {
             width:50px;
@@ -166,7 +168,25 @@
             width: 65%;
             height: 80%;
             float: right;
-            border: 1px solid blue;
+            padding: 2px 2px;
+            box-sizing: border-box;
+            background-color: rgba(240, 236, 241, .7);
+            /* border: 1px solid blue; */
+        }
+        .text {
+            height:75%;
+            width: 90%;
+            margin: 5px auto;
+            overflow-x:hidden;
+            overflow-y:scroll;
+            /* border: 1px solid red; */
+        }
+        .text p {
+            padding: 0 4px 0 7px;
+            line-height: 1.5em;
+            letter-spacing: 0.2em;
+            font-size: 1em;
+            text-align: left;
         }
         .content .footer {
             width: 100%;
@@ -234,12 +254,12 @@
     <!-- 地图界面开始 -->
     <div id="outer">
         <div id="map">
-            <div class="coordinate" style="top:150px;left:90px;"></div>
-            <div class="coordinate" style="top:250px;left:90px;"></div>
-            <div class="coordinate" style="top:350px;left:90px;"></div>
+            <div id="亚洲大象" class="coordinate" style="top:150px;left:90px;"></div>
+            <div id="测试" class="coordinate" style="top:250px;left:90px;"></div>
+            <!-- <div class="coordinate" style="top:350px;left:90px;"></div>
             <div class="coordinate" style="top:50px;left:190px;"></div>
             <div class="coordinate" style="top:50px;left:890px;"></div>
-            <div class="coordinate" style="top:50px;left:990px;"></div>
+            <div class="coordinate" style="top:50px;left:990px;"></div> -->
         </div>
     </div>
     <!-- 提示界面开始 -->
@@ -252,7 +272,7 @@
     <!-- 简介界面开始 -->
     <div id="brief" class="brief">
             <div class="content">
-                <div class="header">
+                <div id="header" class="header">
                     <div id="cancel"></div>
                 </div>
                 <div class="center">
@@ -261,7 +281,12 @@
                         <div class="voice">
                             <img id="playIcon" src="images/playIcon.png" alt="">
                         </div>
-                        <div class="article"></div>
+                        <div class="article">
+                            <div><span>---</span>景点简介<span>---</span></div>
+                            <div id="ar" class="text">
+                                <p id="text"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="footer">
@@ -281,6 +306,9 @@
         var oCoordinates = oMap.getElementsByTagName("div");
         var oOuter = document.getElementById("outer");
         var oBrief = document.getElementById("brief");
+        var oHeader = document.getElementById("header");
+        var oText = document.getElementById("text");
+        var oAr = document.getElementById("ar");
         var oCancel = document.getElementById("cancel");
         var oPlayIcon = document.getElementById("playIcon");
         var oPlayIcon2 = document.getElementById("playIcon");
@@ -288,6 +316,19 @@
         var mapHeight = oMap.offsetHeight;
         var windowWidth = document.body.clientWidth;
         var windowHeight = document.body.clientHeight;
+        var objs = new Array();
+        objs["亚洲大象"] = {
+            img: "images/img1.jpg",
+            title: "亚洲大象",
+            voice: "music/music1.mp3",
+            text: "哈哈哈哈哈哈哈哈哈哈啊哈随碟附送砥砺奋进拉萨的几分拉就死定了房间爱乐山大佛零售价地方了几声两地分居拉萨的菲拉斯惊呆了房价阿斯兰的房间拉三等奖飞哈哈哈哈哈哈哈哈哈啊哈哈哈发货拉萨地方了将阿里山的房间阿萨德飞加拉斯金东方辣椒水地方了将阿里山的房间jjf"
+        };
+        objs["测试"] = {
+            img: "images/img0.jpg",
+            title: "测试",
+            voice: "music/music1.mp3",
+            text: "类似绝地了房价阿斯兰的就废了了房价阿斯兰的肌肤拉斯金东方乐尽哀生两地分居拉三等奖放辣椒水砥砺奋进阿斯兰的房间爱拉三等奖法拉绝对是发垃圾堆放辣椒水砥砺奋进阿里山的肌肤拉三等奖飞拉丝机的放辣椒水砥砺奋进阿斯兰的房间爱拉三等奖分拉三等奖飞垃圾说德律风阿斯兰的房间拉萨的房间"
+        };
         drag(oMap);
         showBrief();
         briefDisappear();
@@ -324,9 +365,14 @@
         }
         // 点击显示简介
         function showBrief(){
-            for(let i of oCoordinates){
-                var hammer = new Hammer(i);
-                hammer.on('tap',function(){
+            for(i=0;i<oCoordinates.length;i++){
+                var hammer = new Hammer(oCoordinates[i]);
+                hammer.on('tap',function(event){
+                    oHeader.style.backgroundImage = "url('"+objs[event.target.id].img+"')";
+                    oText.innerHTML = objs[event.target.id].text;
+                    // alert(event.target);
+                    // alert(objs[event.target.id].img);
+                    // alert(objs[0].img);
                     oBrief.style.display = "flex";
                     oBrief.style.animation = "show 0.8s";
                 });
@@ -342,6 +388,13 @@
                         oBrief.style.display = "none";
                     },"400");
                 }
+                if(music.status='play'){
+                    music.pause();
+                }
+                // setTimeout(function(){
+                //     oAr.scrollTop = 0;
+                // },"300");
+                 oAr.scrollTop = 0;
             })
         }
         // 超出边界退回
@@ -369,11 +422,10 @@
         setTimeout(function timeout(){
             document.getElementById("click_bg").style.display = "none";
         },"3000");
-        // 播放音乐函数
+        // 音乐播放按钮事件
         function playMusic(){
             hammer = new Hammer(oPlayIcon);
             var music = document.getElementById("music");
-
             hammer.on('tap',function(){
                 if(music.paused){
                     music.play();
