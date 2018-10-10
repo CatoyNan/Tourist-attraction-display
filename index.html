@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="js/hammer.min.js"></script>
-    <title>Document</title>
+    <title>古堰画乡</title>
     <style>
         /* 初始化开始 */
         * {
@@ -13,14 +13,11 @@
             padding: 0;
         }
         body {
-            /* background: url(images/bg_small.png); */
+            background-color: rgb(218, 212, 207);
         }
         html,body{
           overflow: hidden;
           height: 100%;
-        }
-        img {
-            /* pointer-events: none;  */
         }
         /* 地图界面开始 */
         #outer {
@@ -31,16 +28,15 @@
             overflow: hidden;
         }
         #map {
-            width: 1680px;
-            height: 764px;
+            width: 900px;
+            height: 630px;
             position: relative;
-            background-image: url(images/map_small.png);
+            background-image: url(images/map.jpg);
         }
         .coordinate {
-            width: 50px;
-            height: 50px;
+            width: 116px;
+            height: 116px;
             position: absolute;
-            border:1px solid red;
             border-radius: 50%;
         }
         .coordinate:click {
@@ -67,7 +63,6 @@
 	        text-align:center;
         }
         .click img {
-            /* margin-top: 50%; */
             width: 70%;
             animation: twinkling 600ms infinite;
             -webkit-animation: twinkling 600ms infinite;
@@ -112,16 +107,13 @@
             height: 40%;
             border-top-left-radius: 7px;
             border-top-right-radius: 7px;
-            /* border:1px solid blue; */
-            /* background: url(images/img1.jpg) */
-            background:
+            background: rgba(255, 255, 255, 0.8)
                         no-repeat
                         scroll
                         center center/100% 100%;
         }
         #cancel {
             float: right;
-            /* border: 1px solid red; */
             width: 20px;
             height: 20px;
             border-radius: 50%;
@@ -141,7 +133,6 @@
             box-sizing: border-box;
             font-size: 0.8em;
             letter-spacing: 1px;
-            /* border:1px solid green; */
         }
         .title {
             width: 100%;
@@ -196,7 +187,6 @@
             letter-spacing: 1px;
             line-height: 6%;
             display: table;
-            /* border:1px solid white; */
             border-bottom-left-radius: 7px;
             border-bottom-right-radius: 7px;
             background-color: rgba(0, 0, 0, 0.4);
@@ -254,12 +244,10 @@
     <!-- 地图界面开始 -->
     <div id="outer">
         <div id="map">
-            <div id="亚洲大象" class="coordinate" style="top:150px;left:90px;"></div>
-            <div id="测试" class="coordinate" style="top:250px;left:90px;"></div>
-            <!-- <div class="coordinate" style="top:350px;left:90px;"></div>
-            <div class="coordinate" style="top:50px;left:190px;"></div>
-            <div class="coordinate" style="top:50px;left:890px;"></div>
-            <div class="coordinate" style="top:50px;left:990px;"></div> -->
+            <div id="通济堰" class="coordinate" style="top:-6px;left:212px;"></div>
+            <div id="古堰画乡展览馆" class="coordinate" style="top:298px;left:167px;"></div>
+            <div id="大港头景区" class="coordinate" style="top:465px;left:57px;"></div>
+            <div id="堰头景区" class="coordinate" style="top:25px;left:10px;"></div>
         </div>
     </div>
     <!-- 提示界面开始 -->
@@ -276,7 +264,7 @@
                     <div id="cancel"></div>
                 </div>
                 <div class="center">
-                    <div class="title">亚洲大象</div>
+                    <div id="title" class="title"></div>
                     <div style="height:100%;width:100%;">
                         <div class="voice">
                             <img id="playIcon" src="images/playIcon.png" alt="">
@@ -296,9 +284,8 @@
     </div>
 
     <!-- 音乐 -->
-    <audio id="music" src="music/music1.mp3" class="stop">
+    <audio id="music" src="" class="stop">
     </audio>
-
 <!-- js -->
 <script type="text/javascript">
     window.onload = function(){
@@ -308,6 +295,8 @@
         var oBrief = document.getElementById("brief");
         var oHeader = document.getElementById("header");
         var oText = document.getElementById("text");
+        var oTitle = document.getElementById("title");
+        var oMusic  = document.getElementById("music");
         var oAr = document.getElementById("ar");
         var oCancel = document.getElementById("cancel");
         var oPlayIcon = document.getElementById("playIcon");
@@ -317,17 +306,29 @@
         var windowWidth = document.body.clientWidth;
         var windowHeight = document.body.clientHeight;
         var objs = new Array();
-        objs["亚洲大象"] = {
-            img: "images/img1.jpg",
-            title: "亚洲大象",
-            voice: "music/music1.mp3",
-            text: "哈哈哈哈哈哈哈哈哈哈啊哈随碟附送砥砺奋进拉萨的几分拉就死定了房间爱乐山大佛零售价地方了几声两地分居拉萨的菲拉斯惊呆了房价阿斯兰的房间拉三等奖飞哈哈哈哈哈哈哈哈哈啊哈哈哈发货拉萨地方了将阿里山的房间阿萨德飞加拉斯金东方辣椒水地方了将阿里山的房间jjf"
+        objs["通济堰"] = {
+            img: "images/img3.jpg",
+            title: "通济堰",
+            voice: "music/music3.mp3",
+            text: "通济堰位于浙江省丽水市莲都区碧湖镇堰头村边，建于南朝萧梁天监四年（公元505年），距今已有1500年历史，是浙江省最古老的大型水利工程。2001年06月25日，通济堰作为南朝至清代古建筑，被国务院批准列入第五批全国重点文物保护单位名单。通济堰由拦水大坝、渠道、分水闸（概）组成水利灌溉体系。大坝拱形，长275米，宽25米，高2.5米，初为木条结构，南宋时改为石坝，是一个以引灌为主，蓄泄兼备的水利工程。"
         };
-        objs["测试"] = {
-            img: "images/img0.jpg",
-            title: "测试",
+        objs["古堰画乡展览馆"] = {
+            img: "images/img1.jpg",
+            title: "古堰画乡展览馆",
             voice: "music/music1.mp3",
-            text: "类似绝地了房价阿斯兰的就废了了房价阿斯兰的肌肤拉斯金东方乐尽哀生两地分居拉三等奖放辣椒水砥砺奋进阿斯兰的房间爱拉三等奖法拉绝对是发垃圾堆放辣椒水砥砺奋进阿里山的肌肤拉三等奖飞拉丝机的放辣椒水砥砺奋进阿斯兰的房间爱拉三等奖分拉三等奖飞垃圾说德律风阿斯兰的房间拉萨的房间"
+            text: "古堰画乡展览馆是古堰画乡创作基地的重要展示窗口。由大港头电影院改造而来，占地2100平米，展馆建筑面积800平米，2006年2月正式开馆。展览馆陈列了丽水巴比松画派40多位画家的90多幅油画创作作品，同时展览馆还设立了行画（商品油画）展示区。展览馆实行展销结合的经营模式。丽水巴比松画派的称谓来源法国巴比松画派。上世纪80年代末，丽水油画家群体受到法国巴比松画派的启迪，借鉴了法国巴比松画家的精神，以写实笔法画我家乡，崇尚自然。经过多年的实践，所创作的作品在省内外展览中取得了好成绩，产生了一定的影响，由此，外界称丽水油画群体为丽水巴比松。现在，丽水巴比松画派群体有100多人。"
+        };
+        objs["大港头景区"] = {
+            img: "images/img0.jpg",
+            title: "大港头景区",
+            voice: "music/music0.mp3",
+            text: "大港头景区即为画乡，画乡文化积淀深厚，一条江滨古街，沿街都是各种店铺，就像许多景点一样，成了一条商业街，但又蕴含着特有的艺术画廊的气息。"
+        };
+        objs["堰头景区"] = {
+            img: "images/img2.jpg",
+            title: "堰头景区",
+            voice: "music/music2.mp3",
+            text: "堰头景区在丽水市碧湖区堰头村，离城区约25公里，与画乡隔江相望。因通济堰（全国文保，4A景区）在这里而得名，通济堰有1500多年历史，古代水利灌溉工程，瓯江和松荫溪在这里汇合，村里有许多古树，枝繁叶茂，许多有百年历史的老屋还保留明清建筑风格，古色古香。"
         };
         drag(oMap);
         showBrief();
@@ -359,9 +360,6 @@
             hammer.on('panend',function(event){
                 reset(element);
             });
-            // hammer.on('tap',function(){
-            //     alert(123);
-            // });
         }
         // 点击显示简介
         function showBrief(){
@@ -370,9 +368,8 @@
                 hammer.on('tap',function(event){
                     oHeader.style.backgroundImage = "url('"+objs[event.target.id].img+"')";
                     oText.innerHTML = objs[event.target.id].text;
-                    // alert(event.target);
-                    // alert(objs[event.target.id].img);
-                    // alert(objs[0].img);
+                    oTitle.innerHTML = objs[event.target.id].title;
+                    oMusic.src = objs[event.target.id].voice;
                     oBrief.style.display = "flex";
                     oBrief.style.animation = "show 0.8s";
                 });
@@ -391,9 +388,6 @@
                 if(music.status='play'){
                     music.pause();
                 }
-                // setTimeout(function(){
-                //     oAr.scrollTop = 0;
-                // },"300");
                  oAr.scrollTop = 0;
             })
         }
@@ -425,27 +419,15 @@
         // 音乐播放按钮事件
         function playMusic(){
             hammer = new Hammer(oPlayIcon);
-            var music = document.getElementById("music");
             hammer.on('tap',function(){
-                if(music.paused){
-                    music.play();
+                if(oMusic.paused){
+                    oMusic.play();
                 }
-                else if(music.status='play'){
-                    music.pause();
+                else if(oMusic.status='play'){
+                    oMusic.pause();
                 }
             });
         }
-        // 增加景点坐标函数
-        // function addPlace(p_x,p_y){
-        //     html =  oOuter.innerHTML;
-        //     // alert(oOuter.innerHTML);
-        //     // oOuter.innerHTML = html + "<div style='top="+p_y+"px;left="+p_x+"px;'></div>";
-        //     oOuter.innerHTML = html + "<div></div>";
-        //     var oDiv = oOuter.getElementsByTagName("div");
-        //     oDiv[oDiv.length-1].className = "coordinate";
-        //     oDiv[oDiv.length-1].style.top = p_y+"px";
-        //     oDiv[oDiv.length-1].style.left = p_x+"px";
-        // }
     }
 </script>
 </body>
